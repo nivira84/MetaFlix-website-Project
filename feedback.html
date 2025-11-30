@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Metaflix</title>
+    <link rel="stylesheet" href="metaflixstyle.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Feedback - Metaflix</title>
+  <link rel="stylesheet" href="/mnt/data/metaflixstyle.css" />
+  <style>
+    .feedback-page { padding: 100px 24px 40px; max-width: 900px; margin: 0 auto; color:var(--text,#fff); }
+    .feedback-form { background: var(--panel,#111); padding:14px; border-radius:8px; margin-bottom:18px; }
+    .feedback-form input, .feedback-form textarea, .feedback-form select {
+      width:100%; padding:8px; margin:8px 0; border-radius:6px; border:none; background:rgba(255,255,255,0.03); color:inherit;
+    }
+    .feedback-list { margin-top:18px; }
+    .no-feedback { color:var(--muted,#bbb); padding:18px; text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="left-area"><div class="logo">Metaflix</div></div>
+    <div class="right-area"><a href="Homepage.html" style="color:inherit">Home</a></div>
+  </div>
+
+  <main class="feedback-page">
+    <h1>Send Feedback</h1>
+
+    <div class="feedback-form">
+      <input id="page-name" placeholder="Your name (optional)">
+      <input id="page-email" placeholder="Email (optional)">
+      <select id="page-type"><option value="general">General</option><option value="bug">Bug</option><option value="idea">Idea</option></select>
+      <label style="display:block;margin-top:8px">Rating</label>
+      <select id="page-rating" style="width:120px">
+        <option value="">—</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+      </select>
+      <textarea id="page-message" placeholder="Write your feedback..."></textarea>
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button id="page-submit" style="background:var(--accent,#e50914);color:#fff;padding:10px;border:none;border-radius:6px;cursor:pointer">Submit</button>
+        <button id="page-clear" style="padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:inherit;cursor:pointer">Clear</button>
+      </div>
+    </div>
+
+    <h2>All Feedback</h2>
+    <div id="feedbackList" class="feedback-list"></div>
+  </main>
+
+  <script>
+    function renderFeedbackList() {
+      const list = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+      const container = document.getElementById("feedbackList");
+      container.innerHTML = "";
+      if (!list.length) {
+        container.innerHTML = '<div class="no-feedback">No feedback yet — be the first to send one!</div>';
+        return;
+      }
+      list.forEach(fb => {
+        const card = document.createElement("div");
+        card.className = "feedback-card";
+        card.innerHTML = `
+          <small>${new Date(fb.createdAt).toLocaleString()} • ${fb.type} • ${fb.url || ''}</small>
+          <strong>${fb.name ? fb.name : (fb.email ? fb.email : "Anonymous")}</strong>
+          <div style="margin:6px 0">${fb.message}</div>
+          <div><span class="stars">${fb.rating ? '★'.repeat(fb.rating) : ''}</span> ${fb.phone ? '<small>Phone: '+fb.phone+'</small>' : ''}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    document.getElementById("page-submit").addEventListener("click", () => {
+      const name = document.getElementById("page-name").value.trim();
+      const email = document.getElementById("page-email").value.trim();
+      const type = document.getElementById("page-type").value;
+      const rating = document.getElementById("page-rating").value;
+      const message = document.getElementById("page-message").value.trim();
+      if (!message) { alert("Please write feedback."); return; }
+      const feedback = {
+        id: 'fb_' + Date.now(),
+        name: name || null,
+        email: email || null,
+        type,
+        rating: rating || null,
+        message,
+        url: location.href,
+        phone: (JSON.parse(localStorage.getItem("metaflixUser") || "{}")).phone || null,
+        createdAt: new Date().toISOString()
+      };
+      const arr = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+      arr.unshift(feedback);
+      localStorage.setItem("feedbacks", JSON.stringify(arr));
+      document.getElementById("page-message").value = "";
+      renderFeedbackList();
+      alert("Thanks! Feedback saved.");
+    });
+
+    document.getElementById("page-clear").addEventListener("click", () => {
+      document.getElementById("page-message").value = "";
+      document.getElementById("page-name").value = "";
+      document.getElementById("page-email").value = "";
+      document.getElementById("page-rating").value = "";
+    });
+
+    // initial render
+    renderFeedbackList();
+  </script>
+</body>
+</html>
