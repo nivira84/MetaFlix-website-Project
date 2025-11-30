@@ -413,96 +413,55 @@ body, html {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
-        padding: 12px 15px;
+        padding: 10px;
+        position: static;  
     }
 
     .left-area {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-        width: 100%;
-    }
-
-    .nav {
-        display: flex;
-        flex-wrap: wrap;
         gap: 10px;
     }
 
-    .nav a {
-        font-size: 14px;
+    .nav {
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     .right-area {
         width: 100%;
-        justify-content: flex-start;
+        justify-content: space-between;
         flex-wrap: wrap;
-        gap: 10px;
+        margin: 0;
     }
 
     .search-box {
         width: 100%;
+        margin-top: 10px;
     }
 
     .hero-content {
-        top: 70%;
+        top: 60%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
 
-    .hero-content h1 {
-        font-size: 1.8rem;
-    }
-
-    .arrow {
-        width: 32px;
-        height: 32px;
+    .category-title {
         font-size: 18px;
+        padding-left: 10px;
     }
 
     .img-toggle-wrapper {
-        width: 140px;
-        height: 210px;
+        width: 160px;
+        height: 230px;
     }
-    
-    .category-row {
-        justify-content: center;
-        gap: 12px;
+
+    .scroll-area {
+        gap: 10px;
+        padding: 10px;
     }
 
     .footer-container {
         flex-direction: column;
-        gap: 15px;
         text-align: center;
     }
-
-    .footer-section {
-        width: 100%;
-    }
-
-    .feedback-popup {
-        width: 90%;
-        right: 5%;
-        bottom: 70px;
-    }
 }
-
-
-@media (max-width: 480px) {
-
-    .img-toggle-wrapper {
-        width: 120px;
-        height: 180px;
-    }
-
-    .nav a {
-        font-size: 12px;
-    }
-
-    .arrow {
-        width: 28px;
-        height: 28px;
-        font-size: 16px;
-    }
-}
-
