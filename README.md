@@ -34,5 +34,5 @@ BAG-AO – index.html, metaflix.css, series.html, movies.html, recommended.html,
 CABANTO – script.js
 CABALLERO – script.js
 GALLARDO – index.html, login.html, signup.html
-PONIENTE – series.html
+PONIENTE – series.html, movies.html
 VERZON – feedback.html, feedback.js
