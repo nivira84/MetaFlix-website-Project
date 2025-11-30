@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Metaflix</title>
+  <link rel="stylesheet" href="metaflixstyle.css" />
+  <style>
+    /* Full-screen background layers for crossfade */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: opacity 1s ease-in-out;
+      opacity: 0;
+      z-index: -2;
+    }
+    .bg-layer.visible { opacity: 1; }
+
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: -1;
+    }
+
+    .center-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-card {
+      width: 360px;
+      background: rgba(10,10,10,0.65);
+      border-radius: 10px;
+      padding: 28px;
+      color: white;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: slideIn .7s forwards;
+    }
+
+    @keyframes slideIn { to { transform: translateY(0); opacity: 1; } }
+
+    /* MetaFlix Logo */
+    .logo-title {
+      font-size: 32px;
+      font-style: italic;
+      color: cornflowerblue;
+      font-weight: bold;
+      margin-bottom: 10px;
+      user-select: none;
+    }
+
+    .login-card input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      background: rgba(255,255,255,0.06);
+      color: white;
+    }
+
+    .login-card button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background: cornflowerblue;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .login-card a { color: cornflowerblue; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div id="bg1" class="bg-layer"></div>
+<div id="bg2" class="bg-layer"></div>
+<div class="bg-overlay"></div>
+
+<div class="center-wrap">
+  <div class="login-card">
+    <div class="logo-title">MetaFlix</div>
+
+    <h2>Welcome Back</h2>
+
+    <input id="username" type="text" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+
+    <button id="loginBtn">Log In</button>
+
+    <p>Don't have an account? <a href="signup.html">Create one</a></p>
+  </div>
+</div>
+
+<script>
+/* Background rotation */
+const posters = [
+  "https://wallpaperaccess.com/full/1981621.jpg",
+  "https://wallpaperaccess.com/full/8654093.jpg",
+  "https://wallpaperaccess.com/full/13934165.jpg",
+  "https://wallpaperaccess.com/full/10927784.jpg",
+  "https://m.media-amazon.com/images/M/MV5BM2Y2YmY4YmItYmQzOC00MTQ4LTg0MjUtZjI3NGFiY2VmYTBjXkEyXkFqcGdeQXVyMTUyMjM3NDkz._V1_.jpg"
+];
+
+let idx = 0;
+const bg1 = document.getElementById("bg1");
+const bg2 = document.getElementById("bg2");
+
+bg1.style.backgroundImage = `url('${posters[0]}')`;
+bg1.classList.add("visible");
+bg2.style.backgroundImage = `url('${posters[1]}')`;
+
+setInterval(() => {
+  idx = (idx + 1) % posters.length;
+  const next = posters[(idx + 1) % posters.length];
+
+  bg2.style.backgroundImage = `url('${next}')`;
+  bg2.classList.add("visible");
+
+  setTimeout(() => {
+    bg1.classList.remove("visible");
+    const temp = bg1.style.backgroundImage;
+    bg1.style.backgroundImage = bg2.style.backgroundImage;
+    bg2.style.backgroundImage = temp;
+    [bg1.className, bg2.className] = ["bg-layer", "bg-layer"];
+    bg1.classList.add("visible");
+  }, 900);
+}, 10000);
+
+/* Login logic */
+document.getElementById('loginBtn').onclick = function () {
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value;
+  const savedUser = localStorage.getItem('metaflixUser');
+  const savedPass = localStorage.getItem('metaflixPass');
+
+  if (user === savedUser && pass === savedPass) {
+    localStorage.setItem('metaflixLoggedIn', 'true');
+    localStorage.setItem('metaflixCurrentUser', user);
+    window.location.href = 'Homepage.html';
+  } else {
+    alert("Incorrect username or password.");
+  }
+};
+</script>
+</body>
+</html>
