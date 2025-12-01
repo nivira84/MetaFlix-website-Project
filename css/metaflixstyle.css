@@ -210,20 +210,6 @@ body, html {
     position: relative;
     width: 100%;
 }
-.scroll-area {
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    gap: 15px;
-    padding: 10px 0;
-    flex: 1;
-    scrollbar-width: none; 
-    -ms-overflow-style: none; 
-}
-.scroll-area::-webkit-scrollbar {
-    display: none; 
-}
 .left-arrow:hover {
     border: none;
     font-size: 20px; 
